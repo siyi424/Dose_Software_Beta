@@ -1,0 +1,14 @@
+services:
+  python-env:
+    image: python:3.9.18
+    volumes:
+      - ./src:/workspace/src
+    working_dir: /workspace
+    command: /bin/sh -c "pip install numpy nibabel SimpleITK && \
+                        python /workspace/src/get_mac/main.py" # os is part of the standard library
+
+  # gate:
+  #   image: opengatecollaboration/gate
+  #   volumes:
+  #     - .:/APP
+  #   command: /bin/sh -c "while true; do sleep 1000; done"

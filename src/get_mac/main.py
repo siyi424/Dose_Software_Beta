@@ -143,7 +143,7 @@ def ICRP_F18PET_source(fpath_atlas, fpath_save, age):
 
 def prepare_simulation_ICRPAtlas(pname, output="output", N=5E8, age=8):
     # 数据文件夹
-    folder_data = os.path.join("data", pname)
+    folder_data = os.path.join("/workspace/data", pname)
     folder_output = os.path.join(output, pname)
     # 输出文件夹
     if not os.path.exists(folder_output):
@@ -172,5 +172,4 @@ if __name__ == "__main__":
 
     # step2: -> PET.nii & pname.mac file
     # pname: data/(phantoms's folder_name)
-    prepare_simulation_ICRPAtlas(pname="01yf", output="output", N=1E8, age=1)
-
+    prepare_simulation_ICRPAtlas(pname="01yf", output="/workspace/output", N=1E8, age=1)

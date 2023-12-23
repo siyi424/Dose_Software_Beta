@@ -2,7 +2,6 @@ import SimpleITK as sitk
 import nibabel as nib
 import numpy as np
 import csv
-import pandas as pd
 import os
 
 def read_mhd_and_raw(file_path):

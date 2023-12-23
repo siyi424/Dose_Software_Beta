@@ -150,7 +150,8 @@ class Components():
     # Simulation Statistic Actor
 
     /gate/actor/addActor                SimulationStatisticActor stat
-    /gate/actor/stat/save               {folder_output}/{patient_name}/Statistic.txt
+    # /gate/actor/stat/save               {folder_output}/{patient_name}/Statistic.txt
+    /gate/actor/stat/save               output/{patient_name}/Statistic.txt
     /gate/actor/stat/saveEveryNSeconds  {saveEveryNSeconds}
 
     """)
@@ -163,7 +164,8 @@ class Components():
     # Dose Actor
 
     /gate/actor/addActor                     DoseActor  dose3d
-    /gate/actor/dose3d/save                  {folder_output}/{patient_name}/output.mhd
+    # /gate/actor/dose3d/save                  {folder_output}/{patient_name}/output.mhd
+    /gate/actor/dose3d/save                  output/{patient_name}/output.mhd
     /gate/actor/dose3d/attachTo    	         {image_type}
     /gate/actor/dose3d/stepHitType           random
     /gate/actor/dose3d/setPosition           0 0 0 cm

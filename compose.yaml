@@ -1,7 +1,21 @@
 services:
+  mysql-env:
+    container_name: mysql-master
+    image: mysql:8.2.0
+    # restart: always
+    user: "1000:1000"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: Chinses_Reference_Population
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
   python-env:
+    container_name: python-master
     image: python:3.9.18
-    user: "${UID}:${GID}"
+    user: "1000:1000"
     volumes:
       - .:/workspace
     working_dir: /workspace
@@ -9,6 +23,7 @@ services:
                         python /workspace/src/get_mac/main.py" # os is part of the standard library
 
   gate:
+    container_name: gate-master
     image: opengatecollaboration/gate
     volumes:
       - .:/APP

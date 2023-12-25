@@ -2,10 +2,13 @@ import os
 import SimpleITK as sitk
 import nibabel as nib
 import numpy as np
+import mysql.connector
+import shutil
 
 from components import PET_Atlas
 from OrganDict import OrganID, MultipleOrgans
 from dat2nii import dat2nii
+
 
 
 # ======================================================================================================================
@@ -165,11 +168,41 @@ def prepare_simulation_ICRPAtlas(pname, output="output", N=5E8, age=8):
     PET_Atlas(fpath=os.path.join("mac", pname + ".mac"), patient_name=pname,
                     pet_name="PET", atlas=atlas, pet=PET, N=N, output=output)
 
+def connect_mysql(filename):
+    mydb = mysql.connector.connect(
+        host="mysql-env",  # Use the service name as hostname
+        user="root",
+        password="123456",
+        database="Chinses_Reference_Population"
+    )
+
+    filename_to_search = filename  # Replace with the actual filename
+    cursor = mydb.cursor()
+    query = f"SELECT file_path FROM your_table WHERE filename = '{filename_to_search}'"
+    cursor.execute(query)
+    result = cursor.fetchone()
+
+    if result:
+        file_path_in_mysql = result[0]
+    else:
+        # Handle the case where the file is not found
+        print("File not found in MySQL.")
+        exit()
+    
+    local_destination_folder = "/workspace/data/03yf"  # Replace with your desired local folder
+    shutil.copy(file_path_in_mysql, local_destination_folder)
+
+
 
 if __name__ == "__main__":
-    # step1: data2nii -> Altas.nii
-    dat2nii(foldername='01yf', filename='222_(201_111_419)_01yf_ChangeOrganWeight_FinalSize(401_222_838)_Fetus_361_200_838_Merged.dat', x=201, y=111, z=419)
+    # step1: connect to mysql
+    filename = "222_(166_96_528)_03yf_ChangeOrganWeight_FinalSize(331_192_1055)_Fetus_344_199_1055_Merged.dat"
+    x, y, z = 166, 96, 528
+    connect_mysql(filename)
 
-    # step2: -> PET.nii & pname.mac file
+    # step2: data2nii -> Altas.nii
+    dat2nii(foldername='03yf', filename=filename, x=x, y=y, z=z)
+
+    # step3: -> PET.nii & pname.mac file
     # pname: data/(phantoms's folder_name)
-    prepare_simulation_ICRPAtlas(pname="01yf", output="/workspace/output", N=1E8, age=1)
+    prepare_simulation_ICRPAtlas(pname="03yf", output="/workspace/output", N=1E8, age=3)

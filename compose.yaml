@@ -1,32 +1,43 @@
 services:
-  mysql-env:
+  db:
     container_name: mysql-master
     image: mysql:8.2.0
-    # restart: always
-    user: "1000:1000"
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    networks:
+      - py2mysql
     environment:
       MYSQL_ROOT_PASSWORD: 123456
       MYSQL_DATABASE: Chinses_Reference_Population
     volumes:
-      - ./mysql:/var/lib/mysql
+      - ./mysql:/dataset
+
+  adminer:
+    image: adminer
+    restart: always
     ports:
-      - "3306:3306"
+      - 8080:8080
 
   python-env:
     container_name: python-master
     image: python:3.9.18
-    user: "1000:1000"
+    networks:
+      - py2mysql
     volumes:
-      - .:/workspace
-    working_dir: /workspace
-    command: /bin/sh -c "pip install numpy nibabel SimpleITK && \
-                        python /workspace/src/get_mac/main.py" # os is part of the standard library
+      - .:/usr/src/app
+    working_dir: /usr/src/app
+    command: /bin/sh -c "pip install numpy nibabel SimpleITK mysql-connector-python shutil"
+
 
   gate:
     container_name: gate-master
     image: opengatecollaboration/gate
     volumes:
       - .:/APP
+
+networks:
+  py2mysql:
+    driver: bridge
 
 
                       

@@ -171,9 +171,9 @@ def prepare_simulation_ICRPAtlas(pname, output="output", N=5E8, age=8):
 def connect_mysql(filename):
     mydb = mysql.connector.connect(
         host="mysql-env",  # Use the service name as hostname
-        user="root",
+        user="myuser",
         password="123456",
-        database="Chinses_Reference_Population"
+        database="mydb"
     )
 
     filename_to_search = filename  # Replace with the actual filename

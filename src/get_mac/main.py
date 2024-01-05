@@ -170,7 +170,7 @@ def prepare_simulation_ICRPAtlas(pname, output="output", N=5E8, age=8):
 
 def connect_mysql(filename):
     mydb = mysql.connector.connect(
-        host="mysql-env",  # Use the service name as hostname
+        host="db",  # Use the service name as hostname
         user="myuser",
         password="123456",
         database="mydb"

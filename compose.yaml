@@ -9,7 +9,7 @@ services:
       MYSQL_ROOT_PASSWORD: 123456
       MYSQL_DATABASE: mydb
     volumes:
-      - ./mysql:/dataset
+      - ./db:/dataset
 
 
   adminer:
@@ -18,14 +18,14 @@ services:
     ports:
       - 8080:8080
 
-  python-env:
+  py:
     container_name: python-master
     image: python:3.9.18
     volumes:
       - ./src:/usr/src/app
     working_dir: /usr/src/app
     # command: ["ls", "/usr/src/app"]
-    entrypoint: ["sh", "-c", "pip install --upgrade pip && pip install numpy nibabel SimpleITK mysql-connector-python shutil && python ./src/get_mac/main.py"]
+    entrypoint: ["sh", "-c", "pip install --upgrade pip && pip install numpy nibabel SimpleITK mysql-connector-python && python get_mac/main.py"]
     depends_on:
       - db
       - adminer
@@ -35,6 +35,8 @@ services:
   gate:
     container_name: gate-master
     image: opengatecollaboration/gate
+    volumes:
+      - ./gate:/APP
     depends_on:
       python-env:
         condition: service_completed_successfully

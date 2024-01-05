@@ -23,3 +23,7 @@ In some containers like python, the mounted folder will not displayed in the doc
     command: ["ls", "/usr/src/app"]
 ```
 Actually, through this command, we can see all the mounted files.
+
+### 3\Installing shutil error
+shutil is now included in default packages, so that no need to install it specifically.
+
